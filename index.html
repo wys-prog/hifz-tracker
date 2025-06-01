@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hifz Tracker</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b3d91">
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 1em; background: #f4f4f4; }
+        h1, h2 { color: #0b3d91; }
+        .ayat { margin: 0.5em 0; padding: 1em; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        button { padding: 0.5em 1em; margin: 1em 0.5em 1em 0; }
+        .checkbox { margin-right: 1em; }
+        .surah-btn { display: flex; justify-content: space-between; align-items: center; width: 100%; background: #fff; border: none; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.07); padding: 1em; margin-bottom: 0.5em; cursor: pointer; }
+        .surah-title { font-weight: bold; }
+        .surah-progress { color: #0b3d91; }
+    </style>
+</head>
+<body>
+    <h1>📖 Hifz Tracker</h1>
+    <p>
+        To sync your progress between devices:<br>
+        1. Click <b>💾 Save my progress</b> to download your file.<br>
+        2. Store it wherever you want (Google Drive, Dropbox, GitHub, etc.).<br>
+        3. On another device, click <b>📂 Load a progress file</b> and select your file.<br>
+        <i>No account or server needed!</i>
+    </p>
+    <div id="global-progress"></div>
+    <button onclick="showSurahs()">Show Surahs</button>
+    <button onclick="showReview()">Review</button>
+    <button onclick="saveProgressToFile()">💾 Save my progress</button>
+    <input type="file" id="load-progress-file" style="display:none" accept=".json" onchange="loadProgressFromFile(event)">
+    <button onclick="document.getElementById('load-progress-file').click()">📂 Load a progress file</button>
+    <div id="content"></div>
+    <script src="app.js"></script>
+</body>
+</html>
