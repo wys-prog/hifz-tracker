@@ -177,6 +177,10 @@ function saveMemorized(mems) {
     localStorage.setItem("memorized", JSON.stringify(mems));
 }
 
+function getMemorizedCount() {
+    return loadMemorized().length;
+}
+
 function getGlobalProgress() {
     const mems = loadMemorized();
     const percent = quranData.length === 0 ? 0 : (100 * mems.length) / quranData.length;
@@ -194,10 +198,27 @@ function getSurahProgress(surahName) {
     return Math.floor((100 * memAyat.length) / ayat.length);
 }
 
+function resetMemorized() {
+    if (!confirm("Are you sure you want to reset all memorized verses?")) return;
+    if (!confirm("This action is irreversible. Confirm again to erase everything.")) return;
+    saveMemorized([]);
+    updateGlobalProgress();
+    showSurahs();
+    alert("All memorized verses have been reset.");
+}
+
 function showSurahs() {
     if (!loaded) return;
     const content = document.getElementById("content");
     content.innerHTML = "<h2>Surah List</h2>";
+
+    // Add the "reset" button
+    const resetBtn = document.createElement("button");
+    resetBtn.innerText = "Reset Memorized";
+    resetBtn.onclick = resetMemorized;
+    resetBtn.style.marginBottom = "1em";
+    content.appendChild(resetBtn);
+
     surahList.forEach(surah => {
         const btn = document.createElement("button");
         btn.className = "surah-btn";
@@ -291,7 +312,23 @@ function showReview() {
 function updateGlobalProgress() {
     const percent = getGlobalProgress();
     document.getElementById("global-progress").innerText =
-        `Global progress: ${percent.floor}% (${percent.precise}%)`;
+        `Global progress: ${percent.floor}% (${percent.precise}%), ${getMemorizedCount()} ayat (verses)`;
+
+    // Masallah !!
+    if (percent.floor === 100) {
+        const msg = document.createElement("div");
+        msg.style.marginTop = "1em";
+        msg.style.padding = "1em";
+        msg.style.background = "#e0ffe0";
+        msg.style.border = "1px solid #b2ffb2";
+        msg.style.borderRadius = "8px";
+        msg.innerHTML = `
+            <b>🌟 MashaAllah! 🌟</b><br>
+            You have memorized the entire Quran!<br>
+            <i>May Allah keep it firm in your heart and grant you barakah. آمين</i>
+        `;
+        document.getElementById("global-progress").appendChild(msg);
+    }
 }
 
 function saveProgressToFile() {

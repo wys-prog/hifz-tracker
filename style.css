@@ -1,0 +1,81 @@
+body {
+    font-family: 'Noto Naskh Arabic', 'Amiri', serif;
+    background-color: #0d1a1a;
+    background-image: url('https://www.transparenttextures.com/patterns/dark-mosaic.png');
+    color: #e9e4d8;
+    margin: 0;
+    padding: 1em;
+}
+
+h1, h2 {
+    color: #aadcd6; /* turquoise doux */
+    font-family: 'Amiri', serif;
+    border-bottom: 2px solid #c2a875;
+    padding-bottom: 0.3em;
+    margin-bottom: 1em;
+}
+
+button {
+    font-family: inherit;
+    background-color: #1c2c2b;
+    border: 1px solid #3f524f;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    margin: 0.4em;
+    color: #e9e4d8;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(172, 147, 97, 0.2);
+    transition: background 0.3s;
+}
+button:hover {
+    background-color: #263e3d;
+}
+
+.surah-btn {
+    background: #142524;
+    border: 2px solid #3c524f;
+    border-left: 6px solid #66bfbf;
+    border-radius: 10px;
+    padding: 1em;
+    margin-bottom: 0.6em;
+    font-family: 'Amiri', serif;
+    width: 100%; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box; 
+}
+
+.surah-title {
+    color: #e6dbc0;
+    font-weight: bold;
+}
+
+.surah-progress {
+    color: #a7f3d0;
+    font-weight: bold;
+}
+
+.ayat {
+    background: #1d2b2b;
+    border: 1px solid #2f423f;
+    border-radius: 8px;
+    padding: 1em;
+    margin: 0.5em 0;
+    font-size: 1.2em;
+    line-height: 1.6;
+    direction: rtl;
+    text-align: right;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.checkbox {
+    margin-left: 1em;
+    float: left;
+}
+
+#global-progress {
+    color: #e3cfa5;
+    font-style: italic;
+    margin: 1em 0;
+}
