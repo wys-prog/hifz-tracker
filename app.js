@@ -2,122 +2,143 @@ let quranData = []; // All ayat (with surah, number, text, surahIndex)
 let surahList = []; // List of surahs (name, index, ayahCount)
 let loaded = false;
 
-const surahs = [
-  "1. Al-Fatihah (The Opening)",
-  "2. Al-Baqarah (The Cow)",
-  "3. Aal-E-Imran (The Family of Imran)",
-  "4. An-Nisa (The Women)",
-  "5. Al-Maidah (The Table Spread)",
-  "6. Al-An'am (The Cattle)",
-  "7. Al-A'raf (The Heights)",
-  "8. Al-Anfal (The Spoils of War)",
-  "9. At-Tawbah (The Repentance)",
-  "10. Yunus (Jonah)",
-  "11. Hud (Hud)",
-  "12. Yusuf (Joseph)",
-  "13. Ar-Ra'd (The Thunder)",
-  "14. Ibrahim (Abraham)",
-  "15. Al-Hijr (The Rocky Tract)",
-  "16. An-Nahl (The Bee)",
-  "17. Al-Isra (The Night Journey)",
-  "18. Al-Kahf (The Cave)",
-  "19. Maryam (Mary)",
-  "20. Taha (Taha)",
-  "21. Al-Anbiya (The Prophets)",
-  "22. Al-Hajj (The Pilgrimage)",
-  "23. Al-Mu’minun (The Believers)",
-  "24. An-Nur (The Light)",
-  "25. Al-Furqan (The Criterion)",
-  "26. Ash-Shu'ara (The Poets)",
-  "27. An-Naml (The Ant)",
-  "28. Al-Qasas (The Stories)",
-  "29. Al-Ankabut (The Spider)",
-  "30. Ar-Rum (The Romans)",
-  "31. Luqman (Luqman)",
-  "32. As-Sajda (The Prostration)",
-  "33. Al-Ahzab (The Combined Forces)",
-  "34. Saba (Sheba)",
-  "35. Fatir (The Originator)",
-  "36. Ya-Sin (Ya Sin)",
-  "37. As-Saffat (Those who set the Ranks)",
-  "38. Sad (The Letter Sad)",
-  "39. Az-Zumar (The Groups)",
-  "40. Ghafir (The Forgiver)",
-  "41. Fussilat (Explained in Detail)",
-  "42. Ash-Shura (The Consultation)",
-  "43. Az-Zukhruf (The Gold Adornments)",
-  "44. Ad-Dukhan (The Smoke)",
-  "45. Al-Jathiyah (The Crouching)",
-  "46. Al-Ahqaf (The Wind-Curved Sandhills)",
-  "47. Muhammad (Muhammad)",
-  "48. Al-Fath (The Victory)",
-  "49. Al-Hujurat (The Rooms)",
-  "50. Qaf (The Letter Qaf)",
-  "51. Adh-Dhariyat (The Winnowing Winds)",
-  "52. At-Tur (The Mount)",
-  "53. An-Najm (The Star)",
-  "54. Al-Qamar (The Moon)",
-  "55. Ar-Rahman (The Beneficent)",
-  "56. Al-Waqi’ah (The Inevitable)",
-  "57. Al-Hadid (The Iron)",
-  "58. Al-Mujadila (The Pleading Woman)",
-  "59. Al-Hashr (The Exile)",
-  "60. Al-Mumtahanah (She that is to be examined)",
-  "61. As-Saf (The Ranks)",
-  "62. Al-Jumu’ah (The Congregation)",
-  "63. Al-Munafiqun (The Hypocrites)",
-  "64. At-Taghabun (The Mutual Disillusion)",
-  "65. At-Talaq (The Divorce)",
-  "66. At-Tahrim (The Prohibition)",
-  "67. Al-Mulk (The Sovereignty)",
-  "68. Al-Qalam (The Pen)",
-  "69. Al-Haqqah (The Reality)",
-  "70. Al-Ma’arij (The Ascending Stairways)",
-  "71. Nuh (Noah)",
-  "72. Al-Jinn (The Jinn)",
-  "73. Al-Muzzammil (The Enshrouded One)",
-  "74. Al-Muddaththir (The Cloaked One)",
-  "75. Al-Qiyamah (The Resurrection)",
-  "76. Al-Insan (Man)",
-  "77. Al-Mursalat (The Emissaries)",
-  "78. An-Naba (The Tidings)",
-  "79. An-Nazi’at (Those who drag forth)",
-  "80. Abasa (He frowned)",
-  "81. At-Takwir (The Overthrowing)",
-  "82. Al-Infitar (The Cleaving)",
-  "83. Al-Mutaffifin (Defrauding)",
-  "84. Al-Inshiqaq (The Splitting Open)",
-  "85. Al-Buruj (The Mansions of the Stars)",
-  "86. At-Tariq (The Morning Star)",
-  "87. Al-A’la (The Most High)",
-  "88. Al-Ghashiyah (The Overwhelming)",
-  "89. Al-Fajr (The Dawn)",
-  "90. Al-Balad (The City)",
-  "91. Ash-Shams (The Sun)",
-  "92. Al-Lail (The Night)",
-  "93. Ad-Duhaa (The Morning Hours)",
-  "94. Ash-Sharh (The Relief)",
-  "95. At-Tin (The Fig)",
-  "96. Al-‘Alaq (The Clot)",
-  "97. Al-Qadr (The Power)",
-  "98. Al-Bayyina (The Clear Proof)",
-  "99. Az-Zalzalah (The Earthquake)",
-  "100. Al-Adiyat (The Courser)",
-  "101. Al-Qari’ah (The Calamity)",
-  "102. At-Takathur (Rivalry in world increase)",
-  "103. Al-Asr (The Declining Day)",
-  "104. Al-Humazah (The Traducer)",
-  "105. Al-Fil (The Elephant)",
-  "106. Quraish (Quraish)",
-  "107. Al-Ma’un (Small Kindnesses)",
-  "108. Al-Kawthar (Abundance)",
-  "109. Al-Kafirun (The Disbelievers)",
-  "110. An-Nasr (Divine Support)",
-  "111. Al-Masad (The Palm Fiber)",
-  "112. Al-Ikhlas (The Sincerity)",
-  "113. Al-Falaq (The Daybreak)",
-  "114. An-Nas (Mankind)"
+const classicAyat = [
+    { label: "Ayat al-Kursi (2:255)", value: "2:255" },
+    { label: "Al-Fatiha (1:1)", value: "1:1" },
+    { label: "Al-Ikhlas (112:1)", value: "112:1" },
+    { label: "Al-Falaq (113:1)", value: "113:1" },
+    { label: "An-Nas (114:1)", value: "114:1" },
+    { label: "Al-Baqarah Last 2 Ayat (2:285)", value: "2:285" }
 ];
+
+const surahs = [
+    "1. الفاتحة — Al-Fatihah (The Opening)",
+    "2. البقرة — Al-Baqarah (The Cow)",
+    "3. آل عمران — Aal-E-Imran (The Family of Imran)",
+    "4. النساء — An-Nisa (The Women)",
+    "5. المائدة — Al-Maidah (The Table Spread)",
+    "6. الأنعام — Al-An'am (The Cattle)",
+    "7. الأعراف — Al-A'raf (The Heights)",
+    "8. الأنفال — Al-Anfal (The Spoils of War)",
+    "9. التوبة — At-Tawbah (The Repentance)",
+    "10. يونس — Yunus (Jonah)",
+    "11. هود — Hud (Hud)",
+    "12. يوسف — Yusuf (Joseph)",
+    "13. الرعد — Ar-Ra'd (The Thunder)",
+    "14. إبراهيم — Ibrahim (Abraham)",
+    "15. الحجر — Al-Hijr (The Rocky Tract)",
+    "16. النحل — An-Nahl (The Bee)",
+    "17. الإسراء — Al-Isra (The Night Journey)",
+    "18. الكهف — Al-Kahf (The Cave)",
+    "19. مريم — Maryam (Mary)",
+    "20. طه — Taha (Taha)",
+    "21. الأنبياء — Al-Anbiya (The Prophets)",
+    "22. الحج — Al-Hajj (The Pilgrimage)",
+    "23. المؤمنون — Al-Mu’minun (The Believers)",
+    "24. النور — An-Nur (The Light)",
+    "25. الفرقان — Al-Furqan (The Criterion)",
+    "26. الشعراء — Ash-Shu'ara (The Poets)",
+    "27. النمل — An-Naml (The Ant)",
+    "28. القصص — Al-Qasas (The Stories)",
+    "29. العنكبوت — Al-Ankabut (The Spider)",
+    "30. الروم — Ar-Rum (The Romans)",
+    "31. لقمان — Luqman (Luqman)",
+    "32. السجدة — As-Sajda (The Prostration)",
+    "33. الأحزاب — Al-Ahzab (The Combined Forces)",
+    "34. سبإ — Saba (Sheba)",
+    "35. فاطر — Fatir (The Originator)",
+    "36. يس — Ya-Sin (Ya Sin)",
+    "37. الصافات — As-Saffat (Those who set the Ranks)",
+    "38. ص — Sad (The Letter Sad)",
+    "39. الزمر — Az-Zumar (The Groups)",
+    "40. غافر — Ghafir (The Forgiver)",
+    "41. فصلت — Fussilat (Explained in Detail)",
+    "42. الشورى — Ash-Shura (The Consultation)",
+    "43. الزخرف — Az-Zukhruf (The Gold Adornments)",
+    "44. الدخان — Ad-Dukhan (The Smoke)",
+    "45. الجاثية — Al-Jathiyah (The Crouching)",
+    "46. الأحقاف — Al-Ahqaf (The Wind-Curved Sandhills)",
+    "47. محمد — Muhammad (Muhammad)",
+    "48. الفتح — Al-Fath (The Victory)",
+    "49. الحجرات — Al-Hujurat (The Rooms)",
+    "50. ق — Qaf (The Letter Qaf)",
+    "51. الذاريات — Adh-Dhariyat (The Winnowing Winds)",
+    "52. الطور — At-Tur (The Mount)",
+    "53. النجم — An-Najm (The Star)",
+    "54. القمر — Al-Qamar (The Moon)",
+    "55. الرحمن — Ar-Rahman (The Beneficent)",
+    "56. الواقعة — Al-Waqi’ah (The Inevitable)",
+    "57. الحديد — Al-Hadid (The Iron)",
+    "58. المجادلة — Al-Mujadila (The Pleading Woman)",
+    "59. الحشر — Al-Hashr (The Exile)",
+    "60. الممتحنة — Al-Mumtahanah (She that is to be examined)",
+    "61. الصف — As-Saf (The Ranks)",
+    "62. الجمعة — Al-Jumu’ah (The Congregation)",
+    "63. المنافقون — Al-Munafiqun (The Hypocrites)",
+    "64. التغابن — At-Taghabun (The Mutual Disillusion)",
+    "65. الطلاق — At-Talaq (The Divorce)",
+    "66. التحريم — At-Tahrim (The Prohibition)",
+    "67. الملك — Al-Mulk (The Sovereignty)",
+    "68. القلم — Al-Qalam (The Pen)",
+    "69. الحاقة — Al-Haqqah (The Reality)",
+    "70. المعارج — Al-Ma’arij (The Ascending Stairways)",
+    "71. نوح — Nuh (Noah)",
+    "72. الجن — Al-Jinn (The Jinn)",
+    "73. المزمل — Al-Muzzammil (The Enshrouded One)",
+    "74. المدثر — Al-Muddaththir (The Cloaked One)",
+    "75. القيامة — Al-Qiyamah (The Resurrection)",
+    "76. الإنسان — Al-Insan (Man)",
+    "77. المرسلات — Al-Mursalat (The Emissaries)",
+    "78. النبأ — An-Naba (The Tidings)",
+    "79. النازعات — An-Nazi’at (Those who drag forth)",
+    "80. عبس — Abasa (He frowned)",
+    "81. التكوير — At-Takwir (The Overthrowing)",
+    "82. الإنفطار — Al-Infitar (The Cleaving)",
+    "83. المطففين — Al-Mutaffifin (Defrauding)",
+    "84. الإنشقاق — Al-Inshiqaq (The Splitting Open)",
+    "85. البروج — Al-Buruj (The Mansions of the Stars)",
+    "86. الطارق — At-Tariq (The Morning Star)",
+    "87. الأعلى — Al-A’la (The Most High)",
+    "88. الغاشية — Al-Ghashiyah (The Overwhelming)",
+    "89. الفجر — Al-Fajr (The Dawn)",
+    "90. البلد — Al-Balad (The City)",
+    "91. الشمس — Ash-Shams (The Sun)",
+    "92. الليل — Al-Lail (The Night)",
+    "93. الضحى — Ad-Duhaa (The Morning Hours)",
+    "94. الشرح — Ash-Sharh (The Relief)",
+    "95. التين — At-Tin (The Fig)",
+    "96. العلق — Al-‘Alaq (The Clot)",
+    "97. القدر — Al-Qadr (The Power)",
+    "98. البينة — Al-Bayyina (The Clear Proof)",
+    "99. الزلزلة — Az-Zalzalah (The Earthquake)",
+    "100. العاديات — Al-Adiyat (The Courser)",
+    "101. القارعة — Al-Qari’ah (The Calamity)",
+    "102. التكاثر — At-Takathur (Rivalry in world increase)",
+    "103. العصر — Al-Asr (The Declining Day)",
+    "104. الهمزة — Al-Humazah (The Traducer)",
+    "105. الفيل — Al-Fil (The Elephant)",
+    "106. قريش — Quraish (Quraish)",
+    "107. الماعون — Al-Ma’un (Small Kindnesses)",
+    "108. الكوثر — Al-Kawthar (Abundance)",
+    "109. الكافرون — Al-Kafirun (The Disbelievers)",
+    "110. النصر — An-Nasr (Divine Support)",
+    "111. المسد — Al-Masad (The Palm Fiber)",
+    "112. الإخلاص — Al-Ikhlas (The Sincerity)",
+    "113. الفلق — Al-Falaq (The Daybreak)",
+    "114. الناس — An-Nas (Mankind)"
+];
+
+function getRecentSearches() {
+    return JSON.parse(localStorage.getItem("recentSearches") || "[]");
+}
+
+function addRecentSearch(val) {
+    let recents = getRecentSearches();
+    recents = recents.filter(v => v !== val);
+    recents.unshift(val);
+    if (recents.length > 5) recents = recents.slice(0, 5);
+    localStorage.setItem("recentSearches", JSON.stringify(recents));
+}
 
 async function loadQuran() {
     const res = await fetch('quran.json');
@@ -207,10 +228,101 @@ function resetMemorized() {
     alert("All memorized verses have been reset.");
 }
 
+function goToAyah(input) {
+    if (!input) return;
+    addRecentSearch(input);
+
+    let surahPart = "", ayahPart = "";
+    if (input.includes(":")) {
+        [surahPart, ayahPart] = input.split(":");
+    } else {
+        alert("Format: Surah:Ayah (e.g. 2:255 or Al-Baqarah:255)");
+        return;
+    }
+    ayahPart = ayahPart.trim();
+
+    let surahName = "";
+    if (/^\d+$/.test(surahPart.trim())) {
+        const idx = parseInt(surahPart.trim()) - 1;
+        if (idx < 0 || idx >= surahList.length) {
+            alert("Surah number not found.");
+            return;
+        }
+        surahName = surahList[idx].name;
+    } else {
+        const found = surahList.find(s => s.name.toLowerCase().includes(surahPart.trim().toLowerCase()));
+        if (!found) {
+            alert("Surah name not found.");
+            return;
+        }
+        surahName = found.name;
+    }
+
+    const ayahNum = parseInt(ayahPart);
+    const ayat = quranData.filter(a => a.surah === surahName);
+    if (!ayat.some(a => a.number === ayahNum)) {
+        alert("Ayah not found in this surah.");
+        return;
+    }
+
+    showAyat(surahName);
+
+    setTimeout(() => {
+        const ayahDivs = Array.from(document.querySelectorAll("#content .ayat"));
+        const targetDiv = ayahDivs.find(div => div.textContent.startsWith(ayahNum + "."));
+        if (targetDiv) {
+            targetDiv.scrollIntoView({behavior: "smooth", block: "center"});
+            targetDiv.style.background = "#fff9c4";
+            setTimeout(() => targetDiv.style.background = "", 2000);
+        }
+    }, 100);
+}
+
 function showSurahs() {
     if (!loaded) return;
     const content = document.getElementById("content");
     content.innerHTML = "<h2>Surah List</h2>";
+
+    // "goto"
+    const gotoDiv = document.createElement("div");
+    gotoDiv.style.marginBottom = "1em";
+    gotoDiv.innerHTML = `
+        <input id="goto-input" placeholder="Go to (e.g. 2:255 or Al-Baqarah:255)" style="width:220px;">
+        <button id="goto-btn">Go</button>
+    `;
+    content.appendChild(gotoDiv);
+
+    document.getElementById("goto-btn").onclick = () => {
+        const val = document.getElementById("goto-input").value.trim();
+        goToAyah(val);
+    };
+
+    const recents = getRecentSearches();
+    if (recents.length > 0) {
+        const recentDiv = document.createElement("div");
+        recentDiv.style.margin = "0.5em 0";
+        recentDiv.innerHTML = `<b>Recent:</b> `;
+        recents.forEach(val => {
+            const btn = document.createElement("button");
+            btn.textContent = val;
+            btn.style.marginRight = "0.5em";
+            btn.onclick = () => goToAyah(val);
+            recentDiv.appendChild(btn);
+        });
+        content.appendChild(recentDiv);
+    }
+
+    const classicDiv = document.createElement("div");
+    classicDiv.style.margin = "0.5em 0";
+    classicDiv.innerHTML = `<b>Classics:</b> `;
+    classicAyat.forEach(item => {
+        const btn = document.createElement("button");
+        btn.textContent = item.label;
+        btn.style.marginRight = "0.5em";
+        btn.onclick = () => goToAyah(item.value);
+        classicDiv.appendChild(btn);
+    });
+    content.appendChild(classicDiv);
 
     // Add the "reset" button
     const resetBtn = document.createElement("button");

@@ -79,3 +79,36 @@ button:hover {
     font-style: italic;
     margin: 1em 0;
 }
+
+#goto-input {
+    padding: 0.5em 1em;
+    border-radius: 8px;
+    border: 1px solid #3f524f;
+    background: #142524;
+    color: #e9e4d8;
+    font-size: 1em;
+    margin-right: 0.5em;
+    outline: none;
+    transition: border 0.2s;
+}
+
+#goto-input:focus {
+    border-color: #66bfbf;
+    background: #1d2b2b;
+}
+
+#goto-btn {
+    background-color: #263e3d;
+    border: 1px solid #3f524f;
+    border-radius: 8px;
+    color: #e9e4d8;
+    padding: 0.5em 1em;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#goto-btn:hover {
+    background-color: #66bfbf;
+    color: #142524;
+}
