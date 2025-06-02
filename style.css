@@ -112,3 +112,17 @@ button:hover {
     background-color: #66bfbf;
     color: #142524;
 }
+
+.surah-group {
+    background: #162626;
+    border-radius: 10px;
+    margin-bottom: 1.5em;
+    padding: 1em 1.2em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.surah-group h3 {
+    margin-top: 0;
+    color: #aadcd6;
+    border-bottom: 1px solid #3c524f;
+    padding-bottom: 0.2em;
+}

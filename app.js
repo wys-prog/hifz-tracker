@@ -250,7 +250,11 @@ function goToAyah(input) {
         }
         surahName = surahList[idx].name;
     } else {
-        const found = surahList.find(s => s.name.toLowerCase().includes(surahPart.trim().toLowerCase()));
+        const found = surahList.find(s => 
+            s.name.toLowerCase().includes(surahPart.trim().toLowerCase()) ||
+            s.name.split('—')[1]?.toLowerCase().includes(surahPart.trim().toLowerCase())
+        );
+
         if (!found) {
             alert("Surah name not found.");
             return;
@@ -403,21 +407,82 @@ function showReview() {
     const content = document.getElementById("content");
     const mems = loadMemorized();
     const today = new Date();
-    const reviewAyat = mems.filter(m => {
-        const d = new Date(m.date || new Date());
-        return (today - d) / (1000 * 60 * 60 * 24) >= 7;
+
+    // Grouper par sourate
+    const bySurah = {};
+    mems.forEach(a => {
+        if (!bySurah[a.surah]) bySurah[a.surah] = [];
+        bySurah[a.surah].push(a);
     });
 
-    content.innerHTML = "<h2>Review</h2>";
-    if (reviewAyat.length === 0) {
-        content.innerHTML += "<p>Nothing to review for now.</p>";
+    content.innerHTML = "<h2>Upcoming Reviews</h2>";
+    if (mems.length === 0) {
+        content.innerHTML += "<p>No ayat memorized yet.</p>";
         return;
     }
-    reviewAyat.forEach(a => {
-        const div = document.createElement("div");
-        div.className = "ayat";
-        div.innerHTML = `<b>${a.surah} ${a.number}</b><br><span>${a.text}</span><br><input placeholder="Write the ayah here..." style="width:100%">`;
-        content.appendChild(div);
+
+    Object.keys(bySurah).forEach((surah, idx) => {
+        // Container
+        const groupDiv = document.createElement("div");
+        groupDiv.className = "surah-group";
+
+        // Button header
+        const header = document.createElement("h3");
+        header.style.display = "flex";
+        header.style.alignItems = "center";
+        header.style.cursor = "pointer";
+
+        const toggleBtn = document.createElement("button");
+        toggleBtn.textContent = "+";
+        toggleBtn.style.marginRight = "0.7em";
+        toggleBtn.style.fontWeight = "bold";
+        toggleBtn.style.fontSize = "1.1em";
+        toggleBtn.style.width = "2em";
+        toggleBtn.style.height = "2em";
+        toggleBtn.style.padding = "0";
+        toggleBtn.style.background = "#263e3d";
+        toggleBtn.style.border = "none";
+        toggleBtn.style.borderRadius = "50%";
+        toggleBtn.style.color = "#aadcd6";
+        toggleBtn.style.cursor = "pointer";
+
+        header.appendChild(toggleBtn);
+        header.appendChild(document.createTextNode(surah));
+        groupDiv.appendChild(header);
+
+        const ayatDiv = document.createElement("div");
+        ayatDiv.style.display = "none";
+        bySurah[surah]
+            .sort((a, b) => a.number - b.number)
+            .forEach(a => {
+                const d = new Date(a.date || new Date());
+                const days = Math.floor((today - d) / (1000 * 60 * 60 * 24));
+                let status = "";
+                if (days >= 7) {
+                    status = `<span style="color:#e57373;font-weight:bold;">Review now!</span>`;
+                } else if (days >= 5) {
+                    status = `<span style="color:#ffd54f;font-weight:bold;">Review soon</span>`;
+                } else {
+                    status = `<span style="color:#81c784;">Fresh</span>`;
+                }
+                const ayatElem = document.createElement("div");
+                ayatElem.className = "ayat";
+                ayatElem.innerHTML = `
+                    <b>${a.number}</b> — <i>${days} day(s) ago</i> ${status}<br>
+                    <span>${a.text}</span>
+                `;
+                ayatDiv.appendChild(ayatElem);
+            });
+        groupDiv.appendChild(ayatDiv);
+
+        // Toggle logic
+        toggleBtn.onclick = () => {
+            const isOpen = ayatDiv.style.display === "block";
+            ayatDiv.style.display = isOpen ? "none" : "block";
+            toggleBtn.textContent = isOpen ? "+" : "−";
+        };
+
+        content.appendChild(groupDiv);
     });
 }
 
@@ -464,16 +529,13 @@ function loadProgressFromFile(event) {
         try {
             let mems = JSON.parse(e.target.result);
             if (Array.isArray(mems)) {
-                // Correction ici : on mappe les noms de sourate du fichier vers ceux de la session courante
                 mems = mems.map(m => {
-                    // Si le fichier contient un surahIndex, on l'utilise pour retrouver le nom courant
                     if (typeof m.surahIndex === "number" && surahList[m.surahIndex - 1]) {
                         return {
                             ...m,
                             surah: surahList[m.surahIndex - 1].name
                         };
                     }
-                    // Sinon, on essaie de matcher par nom partiel
                     const found = surahList.find(s => s.name.includes(m.surah));
                     return found ? { ...m, surah: found.name } : m;
                 });
