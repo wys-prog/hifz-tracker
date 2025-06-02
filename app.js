@@ -465,12 +465,53 @@ function showReview() {
                 } else {
                     status = `<span style="color:#81c784;">Fresh</span>`;
                 }
+
                 const ayatElem = document.createElement("div");
                 ayatElem.className = "ayat";
                 ayatElem.innerHTML = `
-                    <b>${a.number}</b> — <i>${days} day(s) ago</i> ${status}<br>
-                    <span>${a.text}</span>
+                    <b>${a.number}</b> — <i>${days} day(s) ago</i> ${status}
+                    <button type="button" style="margin-left:0.7em;" title="Add/View error" onclick="editAyahError('${a.surah.replace(/'/g,"\\'")}',${a.number})">⚠️</button>
+                    <br><span>${a.text}</span>
                 `;
+
+                if (a.error) {
+                    ayatElem.innerHTML += `<div style="color:#ffb3b3;margin-top:0.3em;"><b>Error:</b> ${a.error}</div>`;
+                }
+
+                let nextReviewDate;
+                if (days < 1) {
+                    nextReviewDate = new Date(d.getTime() + 1 * 24 * 60 * 60 * 1000);
+                } else if (days < 5) {
+                    nextReviewDate = new Date(d.getTime() + 5 * 24 * 60 * 60 * 1000);
+                } else if (days < 7) {
+                    nextReviewDate = new Date(d.getTime() + 7 * 24 * 60 * 60 * 1000);
+                } else {
+                    nextReviewDate = today;
+                }
+                const nextReviewStr = nextReviewDate.toISOString().slice(0, 10);
+                ayatElem.innerHTML += `<div style="color:#b2dfdb;font-size:0.95em;">
+                    <i>Next review:</i> <b>${nextReviewStr}</b>
+                </div>`;
+
+                if (days === 1) {
+                    const ayatAll = quranData.filter(q => q.surah === surah);
+                    const idx = ayatAll.findIndex(q => q.number === a.number);
+                    let context = "";
+                    for (let offset = -2; offset <= 2; offset++) {
+                        if (offset === 0) continue;
+                        const ctxAyah = ayatAll[idx + offset];
+                        if (ctxAyah) {
+                            context += `<div style="margin-left:1em;color:#b2dfdb;">
+                                <b>${ctxAyah.number}</b>: ${ctxAyah.text}
+                            </div>`;
+                        }
+                    }
+                    ayatElem.innerHTML += `<div style="margin-top:0.5em;">
+                        <i>Also review nearby ayat:</i>${context}
+                    </div>`;
+                    
+                }
+
                 ayatDiv.appendChild(ayatElem);
             });
         groupDiv.appendChild(ayatDiv);
@@ -485,6 +526,22 @@ function showReview() {
         content.appendChild(groupDiv);
     });
 }
+
+window.editAyahError = function(surah, number) {
+    const mems = loadMemorized();
+    const idx = mems.findIndex(m => m.surah === surah && m.number === number);
+    if (idx === -1) return;
+    const current = mems[idx].error || "";
+    const val = prompt("Describe the error for this ayah (leave empty to remove):", current);
+    if (val === null) return; // Cancelled
+    if (val.trim() === "") {
+        delete mems[idx].error;
+    } else {
+        mems[idx].error = val.trim();
+    }
+    saveMemorized(mems);
+    showReview();
+};
 
 function updateGlobalProgress() {
     const percent = getGlobalProgress();

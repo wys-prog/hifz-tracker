@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Planned Features & Roadmap</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🚀 Features & Roadmap</h1>
+  <ul>
+    <li><b>Better context display for ayat:</b><br>
+      <span style="color:#b2dfdb;">Improve the alignment and visual grouping of context ayat (previous/next verses) for easier review.</span>
+    </li>
+    <li><b>Error button UX:</b><br>
+      <span style="color:#b2dfdb;">Make error editing smoother and avoid page reloads or flicker when adding/editing errors.</span>
+    </li>
+    <li><b>Font and ayat display:</b><br>
+      <span style="color:#b2dfdb;">Rework ayat rendering for better readability, font consistency, and a more beautiful interface.</span>
+    </li>
+    <li><b>More review logic:</b><br>
+      <span style="color:#b2dfdb;">Smarter reminders and review intervals, with customizable review cycles.</span>
+    </li>
+    <li><b>Mobile experience:</b><br>
+      <span style="color:#b2dfdb;">Improve mobile layout and touch interactions.</span>
+    </li>
+    <li><b>Other ideas:</b>
+      <ul>
+        <li>Dark/light mode toggle</li>
+        <li>Export/import settings</li>
+        <li>Progress charts</li>
+        <li>
+          <form id="suggestionForm" style="margin-top:8px;">
+            <label for="suggestion" style="display:block;margin-bottom:4px;">Suggest a feature:</label>
+            <textarea id="suggestion" name="suggestion" rows="2" style="width:100%;"></textarea>
+            <button type="submit" style="margin-top:4px;">Send</button>
+            <span id="suggestionStatus" style="margin-left:8px;color:green;display:none;">Thank you for your suggestion!</span>
+          </form>
+          <script>
+            document.getElementById('suggestionForm').addEventListener('submit', function(e) {
+              e.preventDefault();
+              var suggestion = document.getElementById('suggestion').value.trim();
+              if (!suggestion) return;
+              var mailto = 'mailto:wysltek@gmail.com'
+          + '?subject=' + encodeURIComponent('Suggestion HifzTracker')
+          + '&body=' + encodeURIComponent(suggestion);
+              window.location.href = mailto;
+              document.getElementById('suggestionStatus').style.display = 'inline';
+              setTimeout(function() {
+          document.getElementById('suggestionStatus').style.display = 'none';
+          document.getElementById('suggestion').value = '';
+              }, 3000);
+            });
+          </script>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <p style="margin-top:2em;">
+    <i>Feel free to suggest features or improvements!</i>
+  </p>
+  <button onclick="window.location.href='index.html'">⬅ Back to Home</button>
+</body>
+</html>
