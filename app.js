@@ -462,8 +462,21 @@ function loadProgressFromFile(event) {
     const reader = new FileReader();
     reader.onload = function(e) {
         try {
-            const mems = JSON.parse(e.target.result);
+            let mems = JSON.parse(e.target.result);
             if (Array.isArray(mems)) {
+                // Correction ici : on mappe les noms de sourate du fichier vers ceux de la session courante
+                mems = mems.map(m => {
+                    // Si le fichier contient un surahIndex, on l'utilise pour retrouver le nom courant
+                    if (typeof m.surahIndex === "number" && surahList[m.surahIndex - 1]) {
+                        return {
+                            ...m,
+                            surah: surahList[m.surahIndex - 1].name
+                        };
+                    }
+                    // Sinon, on essaie de matcher par nom partiel
+                    const found = surahList.find(s => s.name.includes(m.surah));
+                    return found ? { ...m, surah: found.name } : m;
+                });
                 saveMemorized(mems);
                 updateGlobalProgress();
                 showSurahs();
